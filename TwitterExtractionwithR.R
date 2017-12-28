@@ -79,7 +79,7 @@ head(udemytweets)
 
 library("tm")
 
-udemylist <- sapply(udemytweets, function(x) x$getText()) # initiating a function
+ udemylist <- sapply(udemytweets, function(x) x$getText()) # initiating a function
 # in depth info about the apply family and functions in the course "R Level 1"
 
 udemycorpus <- Corpus(VectorSource(udemylist)) # use the corpus function
