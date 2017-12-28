@@ -1,9 +1,4 @@
-### Alternative Authentication
-
-
-# for this method you need the following objects from the 
-# "keys and access token" tab in your developers account
-
+##https://apps.twitter.com/app
 
 key <- "n4RBNeOKXgjF97pp93tv0vAK6"
 
@@ -13,51 +8,38 @@ secrettk <- "JPUh0ovIuZLMLhOwmY4hgsiiNmZp62cNr3XJ5pYH9FuqV"
 
 mytoken <- 	"861271732480618496-QnM6qtZ1MIYCKRlA8oqIIJwFaFJWUQU"
 
-
-# make sure that R recognizes it as character (it turns green when put under quotation)
-
-
-# we need these 2 packages
 library("twitteR")
 library("httr")
 
+1
 
-# we are using the setup_twitter_oauth function
-?setup_twitter_oauth
-
-
-# keep this order of arguments
-setup_twitter_oauth(key, secret, mytoken, secrettk)
-# (1) choose direct authentication
-
-
-# now you should be connected
-
-# in this case you can run the search without the cainfo argument
 udemytweets = searchTwitter("#Udemy", n=1000)
 
-# as you can see, scraping that data is quite time consuming - your machine limits the
-# the efficiency and speed of your mining 
-# if you are plan to scrape a lot in the future 64bit systems and high RAM is desireable
+for( i in udemytweets)
+  if (udemytweets[i] == "utf8towcs")
+  {
+    udemytweets[i] <- NULL
+  }
 
 class(udemytweets)
 length(udemytweets)
-head(udemytweets)
 
 library("tm")
 
 udemylist <- sapply(udemytweets, function(x) x$getText()) # initiating a function
 # in depth info about the apply family and functions in the course "R Level 1"
 
+
+    
+    
+
 udemycorpus <- Corpus(VectorSource(udemylist)) # use the corpus function
 # a corpus is the text body consisting of all the text including the meta info
 
 udemycorpus <- tm_map(udemycorpus, tolower) # putting text to lower case
-
 udemycorpus <- tm_map(udemycorpus, removePunctuation) # remove punct.
 
-udemycorpus <- tm_map(udemycorpus,
-                      function(x)removeWords(x,stopwords())) # remove stopwords (meaningless words)
+udemycorpus <- tm_map(udemycorpus, function(x) removeWords(x,stopwords())) # remove stopwords (meaningless words)
 
 # there is a link to a stop word list in the link lecture
 
