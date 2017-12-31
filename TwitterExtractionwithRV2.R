@@ -1,25 +1,21 @@
 ##https://apps.twitter.com/app
 
-key <- "n4RBNeOKXgjF97pp93tv0vAK6"
+key <- "vYKJtmEaonRNkH42Hc9TyeIYN"
 
-secret <- "cazafkzwfHlacuqvBy0FAdEKGyZqN3F1jPIwpeTIDDdrMreoJV"
+secret <- "nYqAuqWpXkvsbEDvU8GQ029OlcRjzpx5xI5bY5qEiwpINahTTl"
 
-secrettk <- "JPUh0ovIuZLMLhOwmY4hgsiiNmZp62cNr3XJ5pYH9FuqV"
+secrettk <- "UQChGugAym3FSFQjfyioCgXY5aBQhgPOkJQIjfyhgiXFp"
 
-mytoken <- 	"861271732480618496-QnM6qtZ1MIYCKRlA8oqIIJwFaFJWUQU"
+mytoken <- "861271732480618496-jU05ARZuD3jSpjMfgUMMtKXMfMDpQB"
 
 library("twitteR")
 library("httr")
 
-1
+setup_twitter_oauth(key,secret,mytoken,secrettk)
 
-udemytweets = searchTwitter("#Udemy", n=1000)
+udemytweets = searchTwitter("#udemy", n=1000)
 
-for( i in udemytweets)
-  if (udemytweets[i] == "utf8towcs")
-  {
-    udemytweets[i] <- NULL
-  }
+#iconv(udemytweets$text, "ASCII", "UTF-8", sub="")
 
 class(udemytweets)
 length(udemytweets)
@@ -28,10 +24,6 @@ library("tm")
 
 udemylist <- sapply(udemytweets, function(x) x$getText()) # initiating a function
 # in depth info about the apply family and functions in the course "R Level 1"
-
-
-    
-    
 
 udemycorpus <- Corpus(VectorSource(udemylist)) # use the corpus function
 # a corpus is the text body consisting of all the text including the meta info
@@ -42,7 +34,7 @@ udemycorpus <- tm_map(udemycorpus, removePunctuation) # remove punct.
 udemycorpus <- tm_map(udemycorpus, function(x) removeWords(x,stopwords())) # remove stopwords (meaningless words)
 
 # there is a link to a stop word list in the link lecture
-
+udemycorpus
 # Lets see which other transformations tm offers
 ?getTransformations
 
@@ -51,10 +43,11 @@ udemycorpus <- tm_map(udemycorpus, PlainTextDocument)
 
 library("wordcloud")
 
-? wordcloud
+?wordcloud
 
-wordcloud(udemycorpus, min.freq=4, scale=c(5,1), 
-          random.color=F, max.word=45, random.order=F)
+?simple_triplet_matrix
+
+wordcloud(udemycorpus, min.freq=2, scale=c(3,1), random.color=F, max.word=45, random.order=F)
 
 # changing to a tdm
 udemytdm <- TermDocumentMatrix(udemycorpus)

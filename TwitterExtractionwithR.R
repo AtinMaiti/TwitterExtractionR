@@ -89,8 +89,7 @@ udemycorpus <- tm_map(udemycorpus, tolower) # putting text to lower case
 
 udemycorpus <- tm_map(udemycorpus, removePunctuation) # remove punct.
 
-udemycorpus <- tm_map(udemycorpus,
-                      function(x)removeWords(x,stopwords())) # remove stopwords (meaningless words)
+udemycorpus <- tm_map(udemycorpus, function(x)removeWords(x,stopwords())) # remove stopwords (meaningless words)
 
 # there is a link to a stop word list in the link lecture
 
