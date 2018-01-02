@@ -1,56 +1,55 @@
 ##https://apps.twitter.com/app
 
-key <- "vYKJtmEaonRNkH42Hc9TyeIYN"
-
-secret <- "nYqAuqWpXkvsbEDvU8GQ029OlcRjzpx5xI5bY5qEiwpINahTTl"
-
-secrettk <- "UQChGugAym3FSFQjfyioCgXY5aBQhgPOkJQIjfyhgiXFp"
-
-mytoken <- "861271732480618496-jU05ARZuD3jSpjMfgUMMtKXMfMDpQB"
-
+# we need these 2 packages
 library("twitteR")
 library("httr")
+library("ROAuth")
 
-setup_twitter_oauth(key,secret,mytoken,secrettk)
+key = "dPf0GNX6WZg9AN50W8mYTxw60"
 
-udemytweets = searchTwitter("#udemy", n=1000)
+secret = "xn46cHIOFaQDp5TTDhR7jPj5YT64ks4VC9vMrBRiuZxjPRu4Xv"
 
-#iconv(udemytweets$text, "ASCII", "UTF-8", sub="")
+secrettk = "F9PDbqUgvrUECyJPNmjDKu6RvUBFyIXEf7un1x55TQti6"
 
-class(udemytweets)
-length(udemytweets)
+mytoken = "861271732480618496-k1lR51w18VsCnSVi7o1Tha3oV3mMHUh"
+
+
+#?setup_twitter_oauth
+
+
+# keep this order of arguments
+setup_twitter_oauth(key, secret, mytoken, secrettk)
+
+tweets = searchTwitter("#BacardiHousePartySessions", n=1000)
+
+class(tweets)
+length(tweets)
 
 library("tm")
-
-udemylist <- sapply(udemytweets, function(x) x$getText()) # initiating a function
-# in depth info about the apply family and functions in the course "R Level 1"
-
-udemycorpus <- Corpus(VectorSource(udemylist)) # use the corpus function
-# a corpus is the text body consisting of all the text including the meta info
-
-udemycorpus <- tm_map(udemycorpus, tolower) # putting text to lower case
-udemycorpus <- tm_map(udemycorpus, removePunctuation) # remove punct.
-
-udemycorpus <- tm_map(udemycorpus, function(x) removeWords(x,stopwords())) # remove stopwords (meaningless words)
-
-# there is a link to a stop word list in the link lecture
-udemycorpus
-# Lets see which other transformations tm offers
-?getTransformations
-
-# to trasform to plain text which wordcloud can use
-udemycorpus <- tm_map(udemycorpus, PlainTextDocument)
-
 library("wordcloud")
 
-?wordcloud
+tweettext = sapply(tweets, function(x) x$getText()) # extracting the text, tweets is the object your scraped from 
 
-?simple_triplet_matrix
+tweettext=lapply(tweettext, function(x) iconv(x, "latin1", "ASCII", sub="")) # conversion to standard characters # tweettext=lapply(tweettext, function(x) gsub("htt.*",' ',x)) # this step is optional, it removes urls and anything after it
+tweettext=lapply(tweettext, function(x) gsub("#",'',x)) # removing the hashes
+tweettext=unlist(tweettext) # getting the character vector
+tweettext=tolower(tweettext) # putting words to lower cases
 
-wordcloud(udemycorpus, min.freq=2, scale=c(3,1), random.color=F, max.word=45, random.order=F)
+wordcloud(tweettext, min.freq=4, scale=c(5,1), 
+          random.color=F, max.word=45, random.order=F) # plotting the wordcloud with a simple vector
+
+
+
+
+
+
+########################################################3
+
+
+
 
 # changing to a tdm
-udemytdm <- TermDocumentMatrix(udemycorpus)
+tdm <- TermDocumentMatrix(tweettext)
 
 # a DocumentTermMatrix is a very useful tool when it comes to text mining
 # it structures the text in a matrix where each term is organized in a column

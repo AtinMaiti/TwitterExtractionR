@@ -1,22 +1,12 @@
-#This is the code we use in this section. Just copy and paste it into R and follow along with the videos.
+# note: Twitter limits the amount of searches you can perform (15min: 15 scrapes)
 
-#####################################
-
-# Social Media Mining
-
-# Twitter is a great source for sentiment data and social media mining
-# furthermore it is quite easy to get significant amounts of data
-# to be able to scrape data from Twitter you need a standard Twitter account
-# and you need to update it to a developer account
-# note that Twitter limits the amount of searches you can perform (15min: 15 scrapes)
-
-# package twitteR
 library("twitteR")
+library("ROAuth")
 
 # all this info is obtained for the Twitter developer account
-key = "22LdoMzzR7KJgp2LxWH6XDrfT"
+key = "dPf0GNX6WZg9AN50W8mYTxw60"
 
-secret = "ZpKjG6xHMTgGPHLJpx9kunYl3ZgBpUUUJ7HRpE90BNU7JJ74Jr"
+secret = "xn46cHIOFaQDp5TTDhR7jPj5YT64ks4VC9vMrBRiuZxjPRu4Xv"
 
 # set a working directory for the whole process - you need to download a few files 
 # and R needs to know where to look for that stuff
@@ -32,6 +22,8 @@ download.file(url="http://curl.haxx.se/ca/cacert.pem",
 # the dest file is the location on your computer, here it is my working directory
 # and url points to the place where you want to get the file from
 
+?OAuthFactory
+
 # we are entering the whole Twitter API info and call the whole object authenticate
 authenticate <-  OAuthFactory$new(consumerKey=key,
                                   consumerSecret=secret,
@@ -44,11 +36,12 @@ authenticate <-  OAuthFactory$new(consumerKey=key,
 authenticate$handshake(cainfo="C:/Users/maiti/Desktop/TwitterExtractionR/cacert.pem")
 
 # insert the PIN from Twitter
-9573167
+1440708
 
 save(authenticate, file="twitter authentication.Rdata")
 
 registerTwitterOAuth(authenticate)
+setup_twitter_oauth(key, secret)
 
 # Lets start with the Twitter scraping
 
